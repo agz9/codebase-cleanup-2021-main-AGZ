@@ -5,6 +5,9 @@ from pandas import read_csv
 def format_usd(my_price):
     return f"${my_price:,.2f}"
 
+# USD formatting 
+
+
 # READ INVENTORY OF PRODUCTS
 
 products_filepath = os.path.join(os.path.dirname(__file__), "..", "data", "products.csv")
