@@ -12,24 +12,19 @@ def format_usd(my_price):
     '''
     return f"${my_price:,.2f}"
 
+def lookup_product(product_id, all_products):
+    """
+    Params:
+        product_id (str) like "10"
+        all_products (list of dict) each dict should have "id", "name", "department", "aisle" and "price" attributes
+    """
+    matching_products = [p for p in all_products if str(p["id"]) == str(product_id)]
+    if any(matching_products):
+        return matching_products[0]
+    else:
+        return None
 
 
-# READ INVENTORY OF PRODUCTS
-
-products_filepath = os.path.join(os.path.dirname(__file__), "..", "data", "products.csv")
-products_df = read_csv(products_filepath)
-products = products_df.to_dict("records")
-
-# CAPTURE PRODUCT SELECTIONS
-
-    Params my_price is a number (int or float) that we want to format 
-
-    Examples: format_usd(10)
-    '''
-    return f"${my_price:,.2f}"
-
-# PREVENT ALL THE APP CODE FROM BEING IMPORTED
-# BUT STILL BE ABLE TO RUN IT FROM THE COMMAND LINE IS LIKE THIS...
 
 if __name__ == "__main__":
 
@@ -48,9 +43,9 @@ if __name__ == "__main__":
         if selected_id.upper() == "DONE":
             break
         else:
-            matching_products = [p for p in products if str(p["id"]) == str(selected_id)]
-            if any(matching_products):
-                selected_products.append(matching_products[0])
+            matching_product = lookup_product(selected_id, products)
+            if matching_product:
+                selected_products.append(matching_product)
             else:
                 print("OOPS, Couldn't find that product. Please try again.")
 
