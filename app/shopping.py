@@ -5,9 +5,7 @@ from pandas import read_csv
 def format_usd(my_price):
     '''
     Formats a number as USD with a dollar sign and two decimals (and also thousands separator)
-
     Params my_price is a number (int or float) that we want to format 
-
     Examples: format_usd(10)
     '''
     return f"${my_price:,.2f}"
@@ -27,7 +25,6 @@ def lookup_product(product_id, all_products):
 
 
 if __name__ == "__main__":
-
 
     # READ INVENTORY OF PRODUCTS
 
@@ -53,8 +50,6 @@ if __name__ == "__main__":
 
     subtotal = sum([float(p["price"]) for p in selected_products])
 
-
-
     # PRINT RECEIPT
 
     print("---------")
@@ -62,14 +57,16 @@ if __name__ == "__main__":
     print("---------")
     for p in selected_products:
         print("SELECTED PRODUCT: " + p["name"] + "   " + '${:.2f}'.format(p["price"]))
-
-    print("---------")
-    print(f"SUBTOTAL: {format_usd(subtotal)}")
-    print(f"TAX: {format_usd(subtotal * 0.0875)}")
-    print(f"TOTAL: {format_usd(subtotal * 0.0875 + subtotal)}")
-    print("---------")
-    print("THANK YOU! PLEASE COME AGAIN SOON!")
-    print("---------")
+        
+    receipt_items = ["---------", 
+                    f"SUBTOTAL: {format_usd(subtotal)}", 
+                    f"TAX: {format_usd(subtotal * 0.0875)}", 
+                    f"TOTAL: {format_usd(subtotal * 0.0875 + subtotal)}", 
+                     "---------", 
+                     "THANK YOU! PLEASE COME AGAIN SOON!", 
+                     "---------"]
+    for r in receipt_items:
+        print(r)
 
     # WRITE RECEIPT TO FILE
 
@@ -79,12 +76,7 @@ if __name__ == "__main__":
     with open(receipt_filepath, "w") as receipt_file:
         receipt_file.write("------------------------------------------")
         for p in selected_products:
-            receipt_file.write("\nSELECTED PRODUCT: " + p["name"] + "   " + '${:.0f}'.format(p["price"]))
+            receipt_file.write("\nSELECTED PRODUCT: " + p["name"] + "   " + '${:.2f}'.format(p["price"]))
 
-        receipt_file.write("\n---------")
-        receipt_file.write(f"\nSUBTOTAL: {subtotal}")
-        receipt_file.write(f"\nTAX: {subtotal * 0.875}")
-        receipt_file.write(f"\nTOTAL: {((subtotal * 0.875) + subtotal)}")
-        receipt_file.write("\n---------")
-        receipt_file.write("\nTHANK YOU! PLEASE COME AGAIN SOON!")
-        receipt_file.write("\n---------")
+        for r in receipt_items:
+            receipt_file.write('\n' + r)
